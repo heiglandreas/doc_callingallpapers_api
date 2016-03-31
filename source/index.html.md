@@ -2,12 +2,10 @@
 title: API Reference
 
 language_tabs:
-  - shell
-  - ruby
-  - python
+  - php
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='mailto:apikeyrequest@callingallpapers.com>Request an API-Token</a>
   - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -18,151 +16,234 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the API powering [callingallpapers.com](https://api.callingallpapers.com)!
+You can use this API to access Call for Paper (CfP) endpoints to get information
+on currently open CfPs.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+We currently have examples for language bindings in PHP but you can consume this API
+with any language you like. You can view code examples in the dark area to the right,
+and you can switch the programming language of the examples with the tabs in the top right.
 
 # Authentication
 
 > To authorize, use this code:
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+```php
+$client = new GuzzleHttp\Client(['header' => [
+    'Authorize' => 'Bearer myVeryOwnApiKey',
+]]);
 ```
 
-```python
-import kittn
+> Make sure to replace `myVeryOwnApiKey` with your API key.
 
-api = kittn.authorize('meowmeowmeow')
-```
+Callingallpapers uses API keys to allow write access to the API. You can
+request your Callingallpapers-API key by sending an Email to
+[apikeyrequest@callingallpapers.com](mailto:apikeyrequest@callingallpapers.com)
+together with a short description what you'd like to do with it.
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
+Callingallpapers expects for the API key to be included in all API requests to
+the server (except GET) in a header that looks like the following:
 
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
+`Authorization: myVEryOnwApiKey`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+Remember to replace <code>myVeryOwnApiKey</code> with your personal API key.
 </aside>
 
-# Kittens
+# Calls for Papers
 
-## Get All Kittens
+## Get All Calls for Papers
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+```php
+$client = new GuzzleHttp\Client(['header' => [
+    'Authorize' => 'Bearer myVeryOwnApiKey',
+]]);
+$result = $client->request('GET', 'https://example.com/v1/cfp');
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "cfps" : [
+    {
+      "_rel": {
+        "cfp_uri": "v1/cfp/da39a3ee5e6b4b0d3255bfef95601890afd80709"
+      },
+      "dateCfpEnd": "2016-01-02T13:24:35+02:00",
+      "dateCfpStart": "2016-01-01T12:13:14+02:00",
+      "dateEventEnd": "-001-11-30T00:00:00+00:00",
+      "dateEventStart": "-001-11-30T00:00:00+00:00",
+      "description": null,
+      "eventUri": null,
+      "iconUri": null,
+      "lastChange": "2016-02-18T12:00:00+00:00",
+      "latitude": null,
+      "location": null,
+      "longitude": null,
+      "name": "foo",
+      "tags": [
+        ""
+      ],
+      "timezone": "Europe/Berlin",
+      "uri": "http://example.com"
+    }
+  ],
+  "meta" : {
+    "count" : 1
+  }
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This endpoint retrieves all CfPs.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET http://example.com/v1/cfp`
 
-### URL Parameters
+### Content-Types
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+This endpoint can return differntly prepared data for different Content-Types.
+
+MIME-Type | Content
+----------|---------
+application/json (default) | JSON-Data as described
+application/rss+xml | RSS-Feed for the currently open CfPs
+text/calendar | iCalendar-File for subscription in your calendaring-application
+text/html | HTML-Representation
+
+
+### Query Parameters
+
+Not yet implemented!
+
+## Get a Specific CfP
+
+```php
+$client = new GuzzleHttp\Client(['header' => [
+    'Authorize' => 'Bearer myVeryOwnApiKey',
+]]);
+$result = $client->request('GET', 'https://example.com/v1/cfp/<HASH>');
+```
+
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "cfps" : [
+    {
+      "_rel": {
+        "cfp_uri": "v1/cfp/<HASH>"
+      },
+      "dateCfpEnd": "2016-01-02T13:24:35+02:00",
+      "dateCfpStart": "2016-01-01T12:13:14+02:00",
+      "dateEventEnd": "-001-11-30T00:00:00+00:00",
+      "dateEventStart": "-001-11-30T00:00:00+00:00",
+      "description": null,
+      "eventUri": null,
+      "iconUri": null,
+      "lastChange": "2016-02-18T12:00:00+00:00",
+      "latitude": null,
+      "location": null,
+      "longitude": null,
+      "name": "foo",
+      "tags": [
+        ""
+      ],
+      "timezone": "Europe/Berlin",
+      "uri": "http://example.com"
+    }
+  ],
+  "meta" : {
+    "count" : 1
+  }
+}
+```
+
+This endpoint retrieves a specific CfP. The CfP is identified by a hash which is
+the sha1-sum of the URI of the event that opened the CfP.
+
+## Create a new CfP
+
+```php
+$client = new GuzzleHttp\Client(['header' => [
+    'Authorize' => 'Bearer myVeryOwnApiKey',
+]]);
+$result = $client->request('POST', 'https://example.com/v1/cfp', [
+    'form_params' => <POST-Parameters>
+]);
+```
+
+> The above command returns a Location Header with the URL of the newly created resource
+
+
+
+### HTTP Request
+
+`POST http://example.com/v1/cfp`
+
+### POST Parameters
+
+Parameter | Required | Description
+--------- | -------- | -----------
+dateCfpEnd | * | The date the CfP ends. This needs to be a date that can be parsed by php's ```date```function
+dateCfpStart | * | The date the CfP starts. This needs to be a date that can be parsed by php's ```date```function
+dateEventEnd | | The date the Event ends. This needs to be a date that can be parsed by php's ```date```function
+dateEventStart | | The date the Event starts. This needs to be a date that can be parsed by php's ```date```function
+description | | A description of the Conference
+eventUri | * | The URI of the events homepage
+iconUri | | an URI where we can find an icon for the conference. squared is prefered ;)
+latitude | | The latitude of the conference-venue
+location | | The longitude of the conference-venue
+longitude | | The name of the conference-venue
+name | * | The name of the conference
+tags | | A comma-separated list of tags for the event
+timezone | | A timezone name. All dates are assumed to be in that timezone. If no timezone is given "UTC" is assumed
+uri | * | the URI of the CfP
+
+
+
+## Update an existing CfP
+
+```php
+$client = new GuzzleHttp\Client(['header' => [
+    'Authorize' => 'Bearer myVeryOwnApiKey',
+]]);
+$result = $client->request('PUT', 'https://example.com/v1/cfp/<HASH>', [
+    'form_params' => <PUT-Parameters>
+]);
+```
+
+> The above command returns a Location Header with the URL of the newly created resource
+
+
+
+### HTTP Request
+
+`PUT http://example.com/v1/cfp/<HASH>`
+
+### PUT Parameters
+
+Parameter | Required | Description
+--------- | -------- | -----------
+dateCfpEnd | * | The date the CfP ends. This needs to be a date that can be parsed by php's ```date```function
+dateCfpStart | * | The date the CfP starts. This needs to be a date that can be parsed by php's ```date```function
+dateEventEnd | | The date the Event ends. This needs to be a date that can be parsed by php's ```date```function
+dateEventStart | | The date the Event starts. This needs to be a date that can be parsed by php's ```date```function
+description | | A description of the Conference
+eventUri | * | The URI of the events homepage
+iconUri | | an URI where we can find an icon for the conference. squared is prefered ;)
+latitude | | The latitude of the conference-venue
+location | | The longitude of the conference-venue
+longitude | | The name of the conference-venue
+name | * | The name of the conference
+tags | | A comma-separated list of tags for the event
+timezone | | A timezone name. All dates are assumed to be in that timezone. If no timezone is given "UTC" is assumed
+uri | * | the URI of the CfP
+
+
+
+
+
 
