@@ -5,7 +5,7 @@ language_tabs:
   - php
 
 toc_footers:
-  - <a href='mailto:apikeyrequest@callingallpapers.com>Request an API-Token</a>
+  - <a href='mailto:apikeyrequest@callingallpapers.com'>Request an API-Token</a>
   - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
