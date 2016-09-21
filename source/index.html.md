@@ -243,7 +243,41 @@ timezone | | A timezone name. All dates are assumed to be in that timezone. If n
 uri | * | the URI of the CfP
 
 
+## Search for CfPs
 
+```php
+$client = new GuzzleHttp\Client();
+$result = $client->request('GET', 'https://example.com/v1/search?<searchp-parameters>'
+]);
+```
 
+> This command returns a list of CfPs that match the search-parameters
 
+### HTTP Request
 
+`GET http://example.com/v1/search?<search-parameters>`
+
+### Search Parameters
+
+Parameter | Format | Description
+----------|----------|------------
+date_cfp_end | anything DateTime can parse | The date and time the CfP ends
+date_cfp_start | anything DateTime can parse | The date and time the CfP started
+date_event_end | anything DateTime can parse | The date and time the Event ends
+date_event_start | anything DateTime can parse | The date and time the Event starts
+name | string | The name of the event
+
+The values need to be URL-escaped. 
+
+You can add a comparison operator for the date-parameters by adding a search parameter
+with the name of the compared parameters appended with '_compare'. So to compare the 
+```date_cfp_end``` with a "greater than" you would add ```date_cfp_end_compare=%3E``` (urlencoded ">")
+to the search-parameters.
+
+All values can be used with array notation. So when you want to search for a certain 
+value within a range you can add a parameter multiple times. So to search for CfPs ending 
+within a certain range you can use search-parameters as follows:
+
+```
+date_cfp_end[]=2016-08-31T00:00:00%2B00:00&date_cfp_end_compare[]=%3E&date_cfp_end[]=2016-09-01T00:00:00%2b00:00&date_cfp_end_compare[]=%3C
+```
